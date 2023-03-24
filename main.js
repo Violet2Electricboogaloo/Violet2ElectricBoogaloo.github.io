@@ -1,11 +1,60 @@
 let activebutton = null
+let level = 1
+let gameactive = false
+let lastgen = null
 
-let buttons = []
+const colors = ["rgb(255, 0, 0)", "rgb(0, 255, 0)", "rgb(0, 0, 255)", "rgb(120, 255, 0)", "rgb(0, 255, 255)", "rgb(130, 0, 255)", "rgb(255, 0, 255)", "rgb(0, 0, 0)"];
+let blacklistedcolors = []
+let buttons = [];
+
+function gamefunc() {
+    for (let index = 0; index <= level; index++) {
+        for (let indexis = 0; indexis < 2; indexis++) {
+            if (blacklistedcolors.length != colors.length) {
+
+                var whichbut = index.toString() + '-' + indexis.toString()
+                var butcolor = colors[Math.round(Math.random() * colors.length)]
+                
+                $("*").text(blacklistedcolors.find(butcolor))
+                
+                while (blacklistedcolors.find(butcolor) != null) {
+                    var butcolor = colors[Math.round(Math.random() * colors.length)]
+                }
+
+                var button = `<button class="from" id="button${whichbut.toString()}" onclick="from(${whichbut.toString()})" style="background-color: ${butcolor};">${index}</button>`
+                blacklistedcolors.push(butcolor)
+                $("#game").append(button)
+
+
+                
+                // if (lastgen != null) {
+                //     $(lastgen).append(button)
+                // } else {
+                   
+                // }
+            }
+        }
+
+    }
+}
+
+function start() {
+    $("button").attr("disabled", "true")
+    $("#title").transition({
+        "transform": "translateY(-150vh)"
+    }, 1500)
+    setTimeout(() => {
+        $("#title").hide(0)
+        $("#game").show(1000)
+    }, 1600);
+    gameactive = true
+    gamefunc()
+}
+
+
 
 function from(frombutton) {
-    
-
-    if(activebutton != null) {
+    if (activebutton != null) {
         console.log(frombutton.charAt(0), activebutton.charAt(0))
     }
     var thebutton = $("#button" + frombutton)
@@ -26,13 +75,13 @@ function from(frombutton) {
         $("#button" + activebutton).css('background-color', 'limegreen')
         activerbutton = $("#button" + activebutton)
         activebutton = null
-            thebutton.transition({
-                "transform": "scale(0)",
-            }, 3000)
+        thebutton.transition({
+            "transform": "scale(0)",
+        }, 3000)
 
-            activerbutton.transition({
-                "transform": "scale(0)",
-            }, 3000)
+        activerbutton.transition({
+            "transform": "scale(0)",
+        }, 3000)
     } else if (frombutton != activebutton && frombutton.charAt(0) != activebutton.charAt(0)) {
         thebutton.css("background-color", "red")
     }
@@ -57,6 +106,7 @@ function pagewidthchanged() {
 
 $(window).bind('load', function () {
     pagewidthchanged()
+    $("#game").hide(0)
 });
 
 $(window).resize(function () {
