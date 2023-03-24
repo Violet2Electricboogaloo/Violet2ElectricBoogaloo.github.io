@@ -33,14 +33,15 @@ button {
     z-index: 5;
     min-height: var(--def-width);
     min-width: var(--def-width);
-    width: 10vw;
-    height: 10vw;
+    width: 10%;
     background-color: rgb(40, 45, 80);
     border-color: rgb(50, 30, 70);
 
-    opacity: 0.7;
+    aspect-ratio: 1;
 
-    scale: 0.9;
+    filter: opacity(0.8);
+
+    transform: scale(0.9);
 
     border-style: solid;
 
@@ -53,23 +54,26 @@ button {
     transition: all 1.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
+
 button:hover {
     z-index: 10;
 
     opacity: 1;
-    transition: all 3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    /* transition: all 3s cubic-bezier(0.075, 0.82, 0.165, 1); */
+
+    filter: opacity(1);
 
     border-color: rgb(150, 0, 80);
 
-    scale: 1;
+    transform: scale(1);
 }
 
 @keyframes idle {
     0% {
-        transform: rotate(2deg);
+        rotate: 2deg;
     }
 
     100% {
-        transform: rotate(-2deg)
+        rotate: -2deg;
     }
 }

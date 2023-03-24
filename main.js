@@ -3,17 +3,38 @@ let activebutton = null
 let buttons = []
 
 function from(frombutton) {
+    
+
+    if(activebutton != null) {
+        console.log(frombutton.charAt(0), activebutton.charAt(0))
+    }
+    var thebutton = $("#button" + frombutton)
     if (activebutton == null) {
         activebutton = frombutton
-        var thebutton = $("#button" + frombutton)
         thebutton.css("scale", "1.2")
-        thebutton.css("opacity", "1")
-        thebutton.css("outline", "white 2px solid")
+        thebutton.css("opacity", "10")
+        thebutton.css("outline", "rgb(255, 255, 255) 5px solid")
         thebutton.css("z-index", "50")
     } else if (frombutton == activebutton) {
-        thebutton.css("background-color", "green")
-    } else {
-        $("#button" + activebutton).css('background-color',  'red;')
+        thebutton.css("scale", "1")
+        thebutton.css("opacity", "1")
+        thebutton.css("outline", "none")
+        thebutton.css("z-index", "10")
+        activebutton = null
+    } else if (frombutton != activebutton && frombutton.charAt(0) == activebutton.charAt(0)) {
+        thebutton.css("background-color", "limegreen !important")
+        $("#button" + activebutton).css('background-color', 'limegreen')
+        activerbutton = $("#button" + activebutton)
+        activebutton = null
+            thebutton.transition({
+                "transform": "scale(0)",
+            }, 3000)
+
+            activerbutton.transition({
+                "transform": "scale(0)",
+            }, 3000)
+    } else if (frombutton != activebutton && frombutton.charAt(0) != activebutton.charAt(0)) {
+        thebutton.css("background-color", "red")
     }
 }
 
@@ -36,9 +57,6 @@ function pagewidthchanged() {
 
 $(window).bind('load', function () {
     pagewidthchanged()
-
-    fromarray.push($("#debug1"));
-    toarray.push($("#debug2"));
 });
 
 $(window).resize(function () {
