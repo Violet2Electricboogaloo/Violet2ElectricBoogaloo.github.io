@@ -5,18 +5,21 @@ let lastgen = null
 
 const colors = ["rgb(255, 0, 0)", "rgb(0, 255, 0)", "rgb(0, 0, 255)", "rgb(120, 255, 0)", "rgb(0, 255, 255)", "rgb(130, 0, 255)", "rgb(255, 0, 255)", "rgb(0, 0, 0)"];
 let blacklistedcolors = []
-let buttons = [];
+let buttons = ["1-1", "1-2", "2-1", "2-2"];
 
 function gamefunc() {
     level += 1
-    for (let index = 1; index <= level; index++) {
-        for (let indexis = 0; indexis < 2; indexis++) {
+    for (let index = 1; index <= level + 1; index++) {
+        for (let indexis = 1; indexis < 3; indexis++) {
             if (blacklistedcolors.length != colors.length) {
                 
                 var whichbut = `${index}-${indexis}`
                 var butcolor = colors[index]
 
-                var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor}; position: absolute; top: ${(Math.random() * ($(window).innerHeight() - 20)) + 10}px, left: ${(Math.random() * ($(window).innerWidth() - 20)) + 10}px">${index}</button>`
+                var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor}; position: absolute; top: ${Math.random() * 100}vh, left: ${Math.random() * 100}vw">${index}</button>`
+
+                
+                // var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor};">${index}</button>`
                 blacklistedcolors.push(butcolor)
                 buttons.push(whichbut)
                 $("#game").append(button)
@@ -42,9 +45,6 @@ function gamefunc() {
 
 
 function from(frombutton) {
-    // if (activebutton != null) {
-    //     console.log(frombutton.charAt(0), activebutton.charAt(0))
-    // }
     var thebutton = $("#button" + frombutton)
     if (activebutton == null) {
         activebutton = frombutton
@@ -53,14 +53,15 @@ function from(frombutton) {
         thebutton.css("outline", "rgb(255, 255, 255) 5px solid")
         thebutton.css("z-index", "50")
     } else if (frombutton == activebutton) {
+        $("button").text("teest")
         thebutton.css("scale", "1")
         thebutton.css("opacity", "1")
         thebutton.css("outline", "none")
         thebutton.css("z-index", "10")
         activebutton = null
     } else if (frombutton != activebutton && frombutton.charAt(0) == activebutton.charAt(0)) {
-        buttons.splice(buttons[buttons.indexOf(frombutton)]) 
-        buttons.splice(buttons[buttons.indexOf(activebutton)]) 
+        buttons = buttons.filter(e => e !== frombutton)
+        buttons = buttons.filter(e => e !== activebutton)
         thebutton.css("color", "limegreen")
         $("#button" + activebutton).css('color', 'limegreen')
         activerbutton = $("#button" + activebutton)
@@ -69,17 +70,17 @@ function from(frombutton) {
         thebutton.attr("disabled", "true")
         thebutton.transition({
             "transform": "scale(0)",
-        }, 3000)
+        }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
 
         activerbutton.transition({
             "transform": "scale(0)",
-        }, 3000)
+        }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
     } else if (frombutton != activebutton && frombutton.charAt(0) != activebutton.charAt(0)) {
         activerbutton = $("#button" + activebutton)
         thebutton.css("color", "red")
         activerbutton.css("color", "red")
-        thebutton.css("animation-duration", "0.5s")
-        activerbutton.css("animation-duration", "0.5s")
+        thebutton.css("animation-duration", "0.25s")
+        activerbutton.css("animation-duration", "0.25s")
         setTimeout(() => {
             thebutton.css("color", "white")
             activerbutton.css("color", "white")
@@ -87,15 +88,14 @@ function from(frombutton) {
             activerbutton.css("animation-duration", "6s")
         }, 1000);
     }
-    if (buttons.length() <= 0) {
+    if (buttons.length <= 0) {
         setTimeout(() => {
-            if (level = 0) {
-                $("body").show
+            if (level == 0) {
                 $("#title").hide(1000)
-                $("#game").show(0)
+                $("#game").show(1000)
             }
             gamefunc()
-        }, 1000);
+        }, 500);
     }
 }
 
@@ -114,6 +114,9 @@ function pagewidthchanged() {
     } else {
         $("#widthspan").css("color", "limegreen")
     }
+
+
+    $("h1").text(buttons)
 };
 
 $(window).bind('load', function () {
