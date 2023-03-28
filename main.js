@@ -90,7 +90,9 @@ function from(frombutton) {
     if (buttons.length() <= 0) {
         setTimeout(() => {
             if (level = 0) {
-                
+                $("body").show
+                $("#title").hide(1000)
+                $("#game").show(0)
             }
             gamefunc()
         }, 1000);
