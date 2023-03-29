@@ -9,19 +9,15 @@ let buttons = ["1-1", "1-2", "2-1", "2-2"];
 
 function gamefunc() {
     level += 1
-    for (let index = 1; index <= level + 1; index++) {
+    for (let index = 1; index <= level; index++) {
         for (let indexis = 1; indexis < 3; indexis++) {
             if (blacklistedcolors.length != colors.length) {
                 
-                var whichbut = `${index}-${indexis}`
-                // console.log(whichbut)
+                var whichbut = index + "-" + indexis
                 var butcolor = colors[index]
 
-                var button = `<button class="from" id="button${whichbut}" onclick="from('${whichbut}')" style="background-color: ${butcolor}; position: absolute; top: ${Math.ceil(Math.random() * 100)}vh; left: ${Math.ceil(Math.random() * 100)}vw">${index}</button>`
+                var button = `<button class="button${whichbut}" onclick="from('${whichbut}')" style="background-color: ${butcolor}; position: absolute; top: ${Math.ceil(Math.random() * 70) + 15}vh; left: ${Math.ceil(Math.random() * 70) + 15}vw">${index}</button>`
 
-                console.log(button)
-                
-                // var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor};">${index}</button>`
                 blacklistedcolors.push(butcolor)
                 buttons.push(whichbut)
                 $("#game").append(button)
@@ -50,7 +46,7 @@ function from(bruhbuttonm) {
     frombutton = bruhbuttonm.toString()
     console.log(activebutton, frombutton)
 
-    var thebutton = $("#button" + frombutton)
+    var thebutton = $(".button" + frombutton)
     if (activebutton == null) {
         activebutton = frombutton.toString()
         thebutton.css("scale", "1.2")
@@ -58,7 +54,7 @@ function from(bruhbuttonm) {
         thebutton.css("outline", "rgb(255, 255, 255) 5px solid")
         thebutton.css("z-index", "50")
     } else if (frombutton == activebutton) {
-        $("button").text("teest")
+        // $("button").text("teest")
         thebutton.css("scale", "1")
         thebutton.css("opacity", "1")
         thebutton.css("outline", "none")
@@ -68,8 +64,8 @@ function from(bruhbuttonm) {
         buttons = buttons.filter(e => e !== frombutton)
         buttons = buttons.filter(e => e !== activebutton)
         thebutton.css("color", "limegreen")
-        $("#button" + activebutton).css('color', 'limegreen')
-        activerbutton = $("#button" + activebutton)
+        $(".button" + activebutton).css('color', 'limegreen')
+        activerbutton = $(".button" + activebutton)
         activebutton = null
         console.log(thebutton)
         activerbutton.attr("disabled", "true")
@@ -81,8 +77,12 @@ function from(bruhbuttonm) {
         activerbutton.transition({
             "transform": "scale(0)",
         }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
+
+        
+        thebutton.attr("class", "done")
+        activerbutton.attr("class", "done")
     } else if (frombutton != activebutton && frombutton.toString().charAt(0) != activebutton.toString().charAt(0)) {
-        activerbutton = $("#button" + activebutton)
+        activerbutton = $(".button" + activebutton)
         thebutton.css("color", "red")
         activerbutton.css("color", "red")
         thebutton.css("animation-duration", "0.25s")
@@ -99,6 +99,14 @@ function from(bruhbuttonm) {
             if (level == 0) {
                 $("#title").hide(1000)
                 $("#game").show(1000)
+                $("body").css("width", "100vw")
+                $("body").css("height", "100vh")
+                $("html").css("width", "100vw")
+                $("html").css("height", "100vh")
+
+                $("body").css("overflow", "hidden")
+                $("html").css("overflow", "hidden")
+                $("#game").css("overflow", "hidden")
             }
             gamefunc()
         }, 500);
@@ -122,7 +130,7 @@ function pagewidthchanged() {
     }
 
 
-    $("h1").text(buttons)
+    // $("h1").text(buttons)
 };
 
 $(window).bind('load', function () {
