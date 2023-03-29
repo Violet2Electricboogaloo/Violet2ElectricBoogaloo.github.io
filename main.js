@@ -14,10 +14,12 @@ function gamefunc() {
             if (blacklistedcolors.length != colors.length) {
                 
                 var whichbut = `${index}-${indexis}`
+                // console.log(whichbut)
                 var butcolor = colors[index]
 
-                var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor}; position: absolute; top: ${Math.random() * 100}vh, left: ${Math.random() * 100}vw">${index}</button>`
+                var button = `<button class="from" id="button${whichbut}" onclick="from('${whichbut}')" style="background-color: ${butcolor}; position: absolute; top: ${Math.ceil(Math.random() * 100)}vh; left: ${Math.ceil(Math.random() * 100)}vw">${index}</button>`
 
+                console.log(button)
                 
                 // var button = `<button class="from" id="button${whichbut}" onclick="from(${whichbut})" style="background-color: ${butcolor};">${index}</button>`
                 blacklistedcolors.push(butcolor)
@@ -44,10 +46,13 @@ function gamefunc() {
 
 
 
-function from(frombutton) {
+function from(bruhbuttonm) {
+    frombutton = bruhbuttonm.toString()
+    console.log(activebutton, frombutton)
+
     var thebutton = $("#button" + frombutton)
     if (activebutton == null) {
-        activebutton = frombutton
+        activebutton = frombutton.toString()
         thebutton.css("scale", "1.2")
         thebutton.css("opacity", "10")
         thebutton.css("outline", "rgb(255, 255, 255) 5px solid")
@@ -59,7 +64,7 @@ function from(frombutton) {
         thebutton.css("outline", "none")
         thebutton.css("z-index", "10")
         activebutton = null
-    } else if (frombutton != activebutton && frombutton.charAt(0) == activebutton.charAt(0)) {
+    } else if (frombutton != activebutton && frombutton.toString().charAt(0) == activebutton.toString().charAt(0)) {
         buttons = buttons.filter(e => e !== frombutton)
         buttons = buttons.filter(e => e !== activebutton)
         thebutton.css("color", "limegreen")
@@ -68,6 +73,7 @@ function from(frombutton) {
         activebutton = null
         activerbutton.attr("disabled", "true")
         thebutton.attr("disabled", "true")
+        
         thebutton.transition({
             "transform": "scale(0)",
         }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
@@ -75,7 +81,7 @@ function from(frombutton) {
         activerbutton.transition({
             "transform": "scale(0)",
         }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
-    } else if (frombutton != activebutton && frombutton.charAt(0) != activebutton.charAt(0)) {
+    } else if (frombutton != activebutton && frombutton.toString().charAt(0) != activebutton.toString().charAt(0)) {
         activerbutton = $("#button" + activebutton)
         thebutton.css("color", "red")
         activerbutton.css("color", "red")
