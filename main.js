@@ -71,9 +71,9 @@ function from(bruhbuttonm) {
         $("#button" + activebutton).css('color', 'limegreen')
         activerbutton = $("#button" + activebutton)
         activebutton = null
+        console.log(thebutton)
         activerbutton.attr("disabled", "true")
         thebutton.attr("disabled", "true")
-        
         thebutton.transition({
             "transform": "scale(0)",
         }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
