@@ -12,11 +12,6 @@
     font-size: 1.5rem;
 }
 
-html {
-    width: 100vw;
-    height: 100vh;
-}
-
 body, html {
     padding: 0;
     margin: 0;
@@ -74,6 +69,12 @@ button:hover {
     margin: 0;
 }
 
+* {
+    /* outline: blue 3px solid; */
+    padding: 0;
+    margin: 0;
+}
+
 @keyframes idle {
     0% {
         rotate: 2deg;
@@ -83,10 +84,3 @@ button:hover {
         rotate: -2deg;
     }
 }
-
-* {
-    outline: blue 3px solid;
-    padding: 0;
-    margin: 0;
-}
-
