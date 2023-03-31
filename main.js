@@ -14,7 +14,7 @@ let toppositions = []
 function gamefunc() {
     leftpositions = []
     toppositions = []
-    level += 100
+    level += 1
     lives = Math.min(lives + 1, 5)
     for (let index = 1; index <= Math.ceil(level / 5); index++) {
         setTimeout(() => {
