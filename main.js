@@ -8,34 +8,76 @@ let buttoncount = 4
 const colors = ["rgb(255, 0, 0)", "rgb(0, 255, 0)", "rgb(0, 0, 255)", "rgb(120, 255, 0)", "rgb(0, 255, 255)", "rgb(130, 0, 255)", "rgb(255, 0, 255)", "rgb(0, 0, 0)"];
 let blacklistedcolors = []
 let buttons = ["1-1", "1-2", "2-1", "2-2"];
+let leftpositions = []
+let toppositions = []
 
 function gamefunc() {
-    level += 1
+    leftpositions = []
+    toppositions = []
+    level += 100
     lives = Math.min(lives + 1, 5)
-    for (let index = 1; index <= Math.ceil(level/2.5); index++) {
-        var butcolor = colors[Math.round(Math.random() * colors.length)]
-        for (let indexis = 1; indexis <= 2; indexis++) {
+    for (let index = 1; index <= Math.ceil(level / 5); index++) {
+        setTimeout(() => {
+            var R = Math.random() * 255
+            var G = Math.random() * 255
+            var B = Math.random() * 255
 
-                $("#lives").text(lives)
-                $("#level").text(level)
-                $("#buttons").text(buttoncount)
-                
+            var butcolor = `rgb(${R},${G},${B})`
+            for (let indexis = 1; indexis <= 2; indexis++) {
+
                 var whichbut = index + "-" + indexis
 
-                var button = `<button class="button${whichbut}" onclick="from('${whichbut}')" style="background-color: ${butcolor}; position: absolute; top: ${Math.ceil(Math.random() * 60) + 5}vh; left: ${Math.ceil(Math.random() * 70) + 5}vw; z-index: ${Math.ceil(level/2.5) - index}">${index}</button>`
+                var left = (Math.ceil(Math.random() * 20) * 3.5)
+                var top = (Math.ceil(Math.random() * 20) * 3.5)
 
-                blacklistedcolors.push(butcolor)
-                buttons.push(whichbut)
-                $("#game").append(button)
-                buttoncount++
-        }
+                buttons = buttons.filter(e => e !== frombutton)
 
+
+
+                for (let loopy = 0; loopy <= 500; loopy++) {
+                    if (leftpositions.length != leftpositions.filter(e => e !== left).length) {
+                        left = (Math.ceil(Math.random() * 20) * 3.5)
+                    }
+                }
+
+                for (let loopy = 0; loopy <= 500; loopy++) {
+                    if (toppositions.length != toppositions.filter(e => e !== top).length) {
+                        top = (Math.ceil(Math.random() * 20) * 3.5)
+                    }
+                }
+
+                if (toppositions.length == toppositions.filter(e => e !== top).length && leftpositions.length == leftpositions.filter(e => e !== left).length) {
+                    leftpositions.push(left)
+                    toppositions.push(top)
+
+                    var button = `<button class="button${whichbut}" onclick="from('${whichbut}')" style="background-color: ${butcolor}; position: absolute; top: ${top}vh; left: ${left}vw;">${index}</button>`
+
+                    blacklistedcolors.push(butcolor)
+                    buttons.push(whichbut)
+                    $("#game").append(button)
+                    buttoncount++
+
+                    if (R + G + B >= 400) {
+                        $(".button" + whichbut).css("color", "black")
+                    }
+
+
+                    $("#lives").text(lives)
+                    $("#level").text(level)
+                    $("#buttons").text(buttoncount)
+
+                }
+            }
+        }, index * 400);
     }
 }
 
+var bruhtest = new Audio("/sfx/SelectSFX.mp3") 
+
 function from(bruhbuttonm) {
+
     frombutton = bruhbuttonm.toString()
-    console.log(activebutton, frombutton)
+    // console.log(activebutton, frombutton)
 
     var thebutton = $(".button" + frombutton)
     if (activebutton == null) {
@@ -43,7 +85,15 @@ function from(bruhbuttonm) {
         thebutton.css("scale", "1.2")
         thebutton.css("opacity", "10")
         thebutton.css("outline", "rgb(255, 255, 255) 5px solid")
-        thebutton.css("z-index", "500")
+        thebutton.css("z-index", "1")
+        // console.log(frombutton.charAt(2))
+        if (frombutton.charAt(2) == 1) {
+            $("#button" + frombutton.charAt(0) + "-2").css("z-index", "3000")
+            // console.log(2)
+        } else {
+            $("#button" + frombutton.charAt(0) + "-1").css("z-index", "3000")
+            // console.log(1)
+        }
     } else if (frombutton == activebutton) {
         // $("button").text("teest")
         thebutton.css("scale", "1")
@@ -54,8 +104,8 @@ function from(bruhbuttonm) {
     } else if (frombutton != activebutton && frombutton.toString().charAt(0) == activebutton.toString().charAt(0)) {
         buttons = buttons.filter(e => e !== frombutton)
         buttons = buttons.filter(e => e !== activebutton)
-        thebutton.css("color", "limegreen")
-        $(".button" + activebutton).css('color', 'limegreen')
+        thebutton.css("background-color", "limegreen")
+        $(".button" + activebutton).css('background-color', 'limegreen')
         buttoncount -= 2
         activerbutton = $(".button" + activebutton)
         activebutton = null
@@ -63,19 +113,16 @@ function from(bruhbuttonm) {
         thebutton.attr("disabled", "true")
         thebutton.transition({
             "transform": "scale(0)",
-        }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
+        }, 1000)
 
         activerbutton.transition({
             "transform": "scale(0)",
-        }, 3000, "cubic-bezier(0.075, 0.82, 0.165, 1)")
+        }, 1000
+        )
 
         var prevactive = activebutton
-        thebutton.attr("class", `done${frombutton}`)
-        activerbutton.attr("class", `done${activebutton}`)
-        setTimeout(() => {
-            $(".done" + prevactive).remove()
-            $(".done" + frombutton).remove()
-        }, 3000);
+        thebutton.attr("class", `done${frombutton} done`)
+        activerbutton.attr("class", `done${activebutton} done`)
     } else if (frombutton != activebutton && frombutton.toString().charAt(0) != activebutton.toString().charAt(0)) {
         lives -= 1
         activerbutton = $(".button" + activebutton)
@@ -91,6 +138,7 @@ function from(bruhbuttonm) {
         }, 1000);
     }
     if (buttons.length <= 0) {
+
         setTimeout(() => {
             if (level == 0) {
                 $("#title").hide(1000)
@@ -104,9 +152,19 @@ function from(bruhbuttonm) {
                 $("html").css("overflow", "hidden")
                 $("#game").css("overflow", "hidden")
             }
-            gamefunc()
+            setTimeout(() => {
+                $(".done").remove()
+                $(".done").remove()
+                gamefunc()
+            }, 500);
         }, 500);
     }
+    $("#lives").text(lives)
+    $("#level").text(level)
+    $("#buttons").text(buttoncount)
+    
+    bruhtest.currentTime = 0
+    bruhtest.play()
 }
 
 function pagewidthchanged() {
